@@ -33,50 +33,48 @@ def main():
         print("4. Kilépés")
         valasztas = input("Művelet kiválasztása (1/2/3/4): ")
 
-        match valasztas:
+        if valasztas == '1':
 
-            case '1':
+            szobaszam = input("Adja meg a foglalni kívánt szoba számát: ")
+            datum = input("Adja meg a foglalás dátumát (YYYY-MM-DD formátumban): ")
+            try:
+                datum = datetime.datetime.strptime(datum, "%Y-%m-%d").date()
+            except ValueError:
+                print("Hibás dátum formátum!")
+                continue
 
-                szobaszam = input("Adja meg a foglalni kívánt szoba számát: ")
-                datum = input("Adja meg a foglalás dátumát (YYYY-MM-DD formátumban): ")
-                try:
-                    datum = datetime.datetime.strptime(datum, "%Y-%m-%d").date()
-                except ValueError:
-                    print("Hibás dátum formátum!")
-                    continue
+            if datum < datetime.date.today():
+                print("A megadott dátum nem megfelelő! Múltbeli idő megadása nem megengedett!")
+                continue
 
-                if datum < datetime.date.today():
-                    print("A megadott dátum nem megfelelő! Múltbeli idő megadása nem megengedett!")
-                    continue
+            foglalas(szalloda, szobaszam, datum, foglalasok)
 
-                foglalas(szalloda, szobaszam, datum, foglalasok)
+        elif valasztas == '2':
 
-            case '2':
+            print("Lemondás menü")
+            szobaszam = input("Adja meg a lemondani kívánt szoba számát: ")
+            datum = input("Adja meg a lemondás dátumát (YYYY-MM-DD formátumban): ")
 
-                print("Lemondás menü")
-                szobaszam = input("Adja meg a lemondani kívánt szoba számát: ")
-                datum = input("Adja meg a lemondás dátumát (YYYY-MM-DD formátumban): ")
+            try:
+                datum = datetime.datetime.strptime(datum, "%Y-%m-%d").date()
+            except ValueError:
+                print("Hibás dátum formátum!")
+                continue
 
-                try:
-                    datum = datetime.datetime.strptime(datum, "%Y-%m-%d").date()
-                except ValueError:
-                    print("Hibás dátum formátum!")
-                    continue
+            lemondas(foglalasok, szobaszam, datum)
 
-                lemondas(foglalasok, szobaszam, datum)
+        elif valasztas == '3':
 
-            case '3':
+            print("Foglalások listázása:")
+            listazas(foglalasok)
 
-                print("Foglalások listázása:")
-                listazas(foglalasok)
+        elif valasztas == '4':
 
-            case '4':
-
-                print("Kilépés")
-                break
-        
-            case _:
-                print("Hibás bemenet!")
+            print("Kilépés")
+            break
+    
+        else:
+            print("Hibás bemenet!")
 
 
 if __name__ == "__main__":
